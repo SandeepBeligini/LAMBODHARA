@@ -1,388 +1,1817 @@
 <!DOCTYPE html>
 <html lang="te">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color"
+      content="#fff3c7">
+
 <title>లంబోధర ఉత్సవ కమిటీ</title>
+
+
+<!-- =====================================================
+     TELUGU FONT
+===================================================== -->
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet">
+
+
 <style>
-  :root{
-    --gold:#c58a00;
-    --title:#a10f42;
-    --subtitle:#c94d1c;
-    --paper:#fff8d9;
-    --card:rgba(255,255,255,.82);
-    --text:#3d2a18;
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;
-    font-family:"Noto Sans Telugu","Nirmala UI","Gautami",Arial,sans-serif;
-    color:var(--text);
-    min-height:100vh;
+
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    overflow-x: hidden;
+
+    font-family:
+        "Noto Sans Telugu",
+        Arial,
+        sans-serif;
+
     background:
-      radial-gradient(circle at 10% 10%, rgba(255,255,255,.75), transparent 28%),
-      radial-gradient(circle at 90% 20%, rgba(255,215,90,.28), transparent 30%),
-      linear-gradient(135deg,#fff7d2,#ffe9ad,#fff9df,#f9e4a5);
-    background-size:180% 180%;
-    animation:bgMove 16s ease-in-out infinite alternate;
-  }
-  @keyframes bgMove{
-    from{background-position:0% 20%}
-    to{background-position:100% 80%}
-  }
+        linear-gradient(
+            180deg,
+            #fffbea 0%,
+            #fff5d2 45%,
+            #fff9e8 100%
+        );
 
-  .site-header{
-    position:sticky;
-    top:0;
-    z-index:1000;
-    background:rgba(255,248,217,.96);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    border-bottom:5px solid var(--gold);
-    box-shadow:0 4px 18px rgba(90,55,0,.14);
-  }
-  .header-inner{
-    min-height:165px;
-    display:grid;
-    grid-template-columns:125px 1fr 125px;
-    align-items:center;
-    gap:16px;
-    padding:12px 28px 10px;
-  }
-  .logo{
-    width:110px;
-    height:110px;
-    margin:auto;
-    object-fit:contain;
-    border-radius:8px;
-    background:rgba(255,255,255,.35);
-  }
-  .title-wrap{text-align:center}
-  .title{
-    margin:0;
-    color:var(--title);
-    font-size:clamp(32px,5vw,68px);
-    line-height:1.05;
-    font-weight:900;
-    letter-spacing:.02em;
-    text-shadow:2px 3px 0 rgba(115,20,45,.16);
-  }
-  .subtitle{
-    margin:14px 0 0;
-    color:var(--subtitle);
-    font-size:clamp(18px,2.5vw,34px);
-    line-height:1.15;
-    font-weight:800;
-  }
+    color: #512818;
+}
 
-  main{
-    width:min(1050px,94%);
-    margin:28px auto 70px;
-  }
-  .section-title{
-    text-align:center;
-    color:#8f143f;
-    margin:12px 0 20px;
-    font-size:clamp(24px,4vw,40px);
-  }
-  .special-grid{
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:14px;
-    margin-bottom:28px;
-  }
-  .name-card{
-    background:var(--card);
-    border:2px solid rgba(197,138,0,.55);
-    border-radius:18px;
-    padding:18px 10px;
-    min-height:76px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    font-size:clamp(17px,2vw,23px);
-    font-weight:800;
-    box-shadow:0 7px 20px rgba(80,45,0,.12);
-  }
-  .special-grid .name-card{
-    background:linear-gradient(145deg,#fff7ca,#ffe6a1);
-    border-color:#b98000;
-    color:#86133c;
-  }
-  .devotee-list{
-    display:grid;
-    gap:12px;
-  }
-  .devotee{
-    display:grid;
-    grid-template-columns:52px 1fr auto;
-    align-items:center;
-    gap:16px;
-    background:rgba(255,255,255,.82);
-    border:1px solid rgba(160,105,0,.28);
-    border-radius:14px;
-    padding:12px 20px;
-    box-shadow:0 4px 13px rgba(70,40,0,.08);
-    font-size:clamp(17px,2.1vw,23px);
-    font-weight:650;
-  }
-  .number{
-    width:42px;height:42px;
-    border-radius:50%;
-    display:grid;place-items:center;
-    background:#a10f42;
-    color:white;
-    font-weight:900;
-    font-size:18px;
-  }
-  .devotee-name{
-    color:var(--text);
-    word-break:break-word;
-  }
-  .devotee-gothram{
-    color:#734413;
-    font-size:clamp(15px,1.9vw,20px);
-    font-weight:600;
-    background:rgba(255,232,150,.45);
-    border:1px dashed rgba(197,138,0,.45);
-    padding:4px 14px;
-    border-radius:10px;
-    white-space:nowrap;
-  }
-  .status{
-    text-align:center;
-    padding:18px;
-    color:#795a35;
-    font-size:16px;
-  }
-  .error{color:#a10f42}
-  .footer{text-align:center;opacity:.72;padding:15px;line-height:1.6}
 
-  @media(max-width:800px){
-    .header-inner{grid-template-columns:70px 1fr 70px;min-height:105px;padding:7px 10px}
-    .logo{width:62px;height:62px}
-    .subtitle{margin-top:7px}
-    .special-grid{grid-template-columns:repeat(2,1fr)}
-  }
-  @media(max-width:640px){
-    .devotee{
-      grid-template-columns:45px 1fr;
-      row-gap:8px;
-      column-gap:12px;
-      padding:10px 14px;
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header {
+
+    width: 100%;
+
+    text-align: center;
+
+    padding:
+        25px 12px
+        22px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fffbe7 0%,
+            #fff1c4 100%
+        );
+
+    border-bottom:
+        6px solid #d49a00;
+
+    box-shadow:
+        0 5px 15px
+        rgba(100, 65, 10, 0.15);
+}
+
+
+.header-title {
+
+    margin: 0;
+
+    color: #971744;
+
+    font-size:
+        clamp(30px, 7vw, 54px);
+
+    font-weight: 800;
+
+    line-height: 1.3;
+
+    text-shadow:
+        1px 2px 0 #f3d5a7;
+}
+
+
+.header-subtitle {
+
+    margin:
+        8px 0 0;
+
+    color: #c74c20;
+
+    font-size:
+        clamp(16px, 4vw, 25px);
+
+    font-weight: 700;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main {
+
+    width: 94%;
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   SECTION TITLE
+===================================================== */
+
+.section-title {
+
+    margin:
+        42px 0 20px;
+
+    color: #951743;
+
+    font-size:
+        clamp(28px, 6vw, 46px);
+
+    font-weight: 800;
+
+    line-height: 1.4;
+}
+
+
+/* =====================================================
+   SPECIAL DONORS
+===================================================== */
+
+.special-donors {
+
+    width: 100%;
+
+    margin:
+        0 auto 45px;
+
+    padding:
+        20px 15px 25px;
+
+    background:
+        rgba(255, 255, 255, 0.60);
+
+    border:
+        1px solid #e5bb61;
+
+    border-radius:
+        18px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(110, 70, 10, 0.08);
+}
+
+
+.donors-list {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(220px, 1fr)
+        );
+
+    gap: 12px;
+}
+
+
+.donor-card {
+
+    padding:
+        13px 15px;
+
+    background:
+        #ffffff;
+
+    border:
+        1px solid #efd39a;
+
+    border-radius:
+        12px;
+
+    color:
+        #5c2b19;
+
+    font-size:
+        17px;
+
+    font-weight:
+        600;
+
+    box-shadow:
+        0 2px 8px
+        rgba(100, 60, 10, 0.06);
+}
+
+
+/* =====================================================
+   DEVOTEES SECTION
+===================================================== */
+
+.devotees-section {
+
+    width: 100%;
+
+    margin:
+        0 auto 45px;
+}
+
+
+.devotees-title {
+
+    margin:
+        0 0 20px;
+
+    color:
+        #951743;
+
+    font-size:
+        clamp(27px, 6vw, 44px);
+
+    font-weight:
+        800;
+
+    line-height:
+        1.4;
+}
+
+
+/* =====================================================
+   COUNT
+===================================================== */
+
+.count-box {
+
+    width: 100%;
+
+    margin:
+        0 0 15px;
+
+    padding:
+        13px 18px;
+
+    background:
+        rgba(255, 255, 255, 0.72);
+
+    border:
+        1px solid #e6ba58;
+
+    border-radius:
+        14px;
+
+    color:
+        #65401f;
+
+    font-size:
+        clamp(17px, 4vw, 23px);
+
+    font-weight:
+        600;
+
+    box-shadow:
+        0 3px 10px
+        rgba(100, 60, 10, 0.07);
+}
+
+
+.count-number {
+
+    color:
+        #b74819;
+
+    font-size:
+        clamp(22px, 5vw, 30px);
+
+    font-weight:
+        800;
+}
+
+
+/* =====================================================
+   DEVOTEE SCROLL AREA
+
+   ONLY THIS AREA SCROLLS
+===================================================== */
+
+.devotee-scroll {
+
+    width: 100%;
+
+    height: 500px;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+    padding:
+        5px 5px 15px;
+
+    -webkit-overflow-scrolling:
+        touch;
+
+    scrollbar-width:
+        thin;
+
+    scrollbar-color:
+        #aa8b5b
+        transparent;
+}
+
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+.devotee-scroll::-webkit-scrollbar {
+
+    width: 8px;
+}
+
+
+.devotee-scroll::-webkit-scrollbar-track {
+
+    background:
+        rgba(180, 140, 60, 0.12);
+
+    border-radius:
+        10px;
+}
+
+
+.devotee-scroll::-webkit-scrollbar-thumb {
+
+    background:
+        #aa8b5b;
+
+    border-radius:
+        10px;
+}
+
+
+/* =====================================================
+   DEVOTEE CARD
+===================================================== */
+
+.devotee-card {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        48px
+        minmax(0, 1fr);
+
+    gap: 12px;
+
+    align-items: center;
+
+    margin:
+        0 0 10px;
+
+    padding:
+        10px 13px;
+
+    background:
+        rgba(255, 255, 255, 0.95);
+
+    border:
+        1px solid #efd8aa;
+
+    border-radius:
+        13px;
+
+    text-align:
+        left;
+
+    box-shadow:
+        0 3px 9px
+        rgba(100, 60, 10, 0.07);
+}
+
+
+/* =====================================================
+   SERIAL NUMBER
+===================================================== */
+
+.serial-number {
+
+    width: 40px;
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius:
+        50%;
+
+    background:
+        #fff0b7;
+
+    color:
+        #8f4018;
+
+    font-size:
+        15px;
+
+    font-weight:
+        800;
+}
+
+
+/* =====================================================
+   DEVOTEE INFO
+===================================================== */
+
+.devotee-info {
+
+    min-width:
+        0;
+}
+
+
+.devotee-name {
+
+    color:
+        #171a2d;
+
+    font-size:
+        clamp(17px, 4vw, 22px);
+
+    font-weight:
+        700;
+
+    line-height:
+        1.45;
+
+    overflow-wrap:
+        anywhere;
+}
+
+
+/* =====================================================
+   GOTHRAM
+===================================================== */
+
+.devotee-gothram {
+
+    margin-top:
+        3px;
+
+    color:
+        #76522f;
+
+    font-size:
+        clamp(13px, 3vw, 16px);
+
+    line-height:
+        1.5;
+
+    overflow-wrap:
+        anywhere;
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading {
+
+    padding:
+        45px 15px;
+
+    text-align:
+        center;
+
+    color:
+        #786047;
+
+    font-size:
+        18px;
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.error {
+
+    padding:
+        40px 15px;
+
+    text-align:
+        center;
+
+    color:
+        #a52d24;
+
+    font-size:
+        17px;
+
+    line-height:
+        1.8;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer {
+
+    width:
+        100%;
+
+    margin-top:
+        15px;
+
+    padding:
+        30px 18px 42px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff1bd 0%,
+            #ffecac 100%
+        );
+
+    border-top:
+        5px solid #d49a00;
+
+    text-align:
+        center;
+}
+
+
+.footer-message {
+
+    width:
+        100%;
+
+    max-width:
+        950px;
+
+    margin:
+        0 auto;
+
+    color:
+        #634329;
+
+    font-size:
+        clamp(16px, 3.8vw, 23px);
+
+    font-weight:
+        500;
+
+    line-height:
+        2;
+}
+
+
+.footer-blessing {
+
+    display:
+        block;
+
+    margin-top:
+        14px;
+
+    color:
+        #951743;
+
+    font-size:
+        clamp(18px, 4vw, 26px);
+
+    font-weight:
+        800;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .header {
+
+        padding:
+            22px 10px
+            20px;
     }
-    .devotee-gothram{
-      grid-column:2;
-      justify-self:start;
-      white-space:normal;
+
+
+    .special-donors {
+
+        padding:
+            15px 10px
+            20px;
     }
-  }
-  @media(max-width:480px){
-    .header-inner{grid-template-columns:52px 1fr 52px;gap:5px}
-    .logo{width:48px;height:48px}
-    .special-grid{grid-template-columns:1fr}
-  }
+
+
+    .donors-list {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .devotee-scroll {
+
+        height:
+            470px;
+
+        padding-left:
+            2px;
+
+        padding-right:
+            2px;
+    }
+
+
+    .devotee-card {
+
+        grid-template-columns:
+            42px
+            minmax(0, 1fr);
+
+        gap:
+            9px;
+
+        padding:
+            9px 9px;
+    }
+
+
+    .serial-number {
+
+        width:
+            36px;
+
+        height:
+            36px;
+
+        font-size:
+            14px;
+    }
+
+
+    .footer {
+
+        padding:
+            25px 14px
+            35px;
+    }
+
+}
+
+
+/* =====================================================
+   SMALL PHONES
+===================================================== */
+
+@media (max-width: 380px) {
+
+    .devotee-scroll {
+
+        height:
+            430px;
+    }
+
+
+    .devotee-card {
+
+        grid-template-columns:
+            38px
+            minmax(0, 1fr);
+
+        gap:
+            7px;
+    }
+
+
+    .serial-number {
+
+        width:
+            33px;
+
+        height:
+            33px;
+
+        font-size:
+            13px;
+    }
+
+}
+
 </style>
+
 </head>
 
+
 <body>
-<header class="site-header">
-  <div class="header-inner">
-    <img class="logo" src="left-logo.png" alt="Committee logo">
-    <div class="title-wrap">
-      <h1 class="title">లంబోధర ఉత్సవ కమిటీ</h1>
-      <p class="subtitle">వికలాంగుల కాలనీ, బైపాస్ రోడ్డు, ఖమ్మం</p>
-    </div>
-    <img class="logo" src="right-logo.png" alt="Committee emblem">
-  </div>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <h1 class="header-title">
+
+        లంబోధర ఉత్సవ కమిటీ
+
+    </h1>
+
+
+    <p class="header-subtitle">
+
+        వికలాంగుల కాలనీ, బైపాస్ రోడ్డు, ఖమ్మం
+
+    </p>
+
 </header>
 
-<main>
-  <h2 class="section-title">ప్రత్యేక ధాతలు</h2>
-  <section id="specialNames" class="special-grid"></section>
 
-  <h2 class="section-title">భక్తుల పేర్లు</h2>
-  <section id="devoteeList" class="devotee-list">
-    <div class="status">పేర్లు లోడ్ అవుతున్నాయి...</div>
-  </section>
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="main">
+
+
+    <!-- =================================================
+         ప్రత్యేక దాతలు
+    ================================================== -->
+
+    <section class="special-donors">
+
+        <h2 class="section-title">
+
+            ప్రత్యేక దాతలు
+
+        </h2>
+
+
+        <div class="donors-list">
+
+
+            <!--
+                ప్రత్యేక దాతల పేర్లను
+                ఇక్కడ మార్చండి.
+            -->
+
+
+            <div class="donor-card">
+
+                ప్రత్యేక దాతల వివరాలు
+
+            </div>
+
+
+            <div class="donor-card">
+
+                త్వరలో వివరాలు
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         భక్తుల పేర్లు
+    ================================================== -->
+
+    <section class="devotees-section">
+
+
+        <h2 class="devotees-title">
+
+            భక్తుల పేర్లు
+
+        </h2>
+
+
+        <div class="count-box">
+
+            మొత్తం భక్తులు:
+
+            <span
+                id="totalCount"
+                class="count-number">
+
+                0
+
+            </span>
+
+        </div>
+
+
+        <!--
+            SEARCH REMOVED
+
+            ONLY THIS AREA SCROLLS
+        -->
+
+
+        <div
+            id="devoteeScroll"
+            class="devotee-scroll">
+
+
+            <div class="loading">
+
+                భక్తుల పేర్లు
+                లోడ్ అవుతున్నాయి...
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
 </main>
 
-<div class="footer">మీ అందరి అంకితభావం, భక్తిశ్రద్ధలు మరియు సమయస్ఫూర్తి వల్లనే ఈ పండగ ఇంత అద్భుతంగా ముగిసింది. విఘ్నేశుని ఆశీస్సులు మీ అందరికీ, మీ కుటుంబ సభ్యులందరికీ సదా ఉండాలని, ఆయురారోగ్యాలతో సుఖసంతోషాలతో వర్ధిల్లాలని మనసారా కోరుకుంటున్నాము. గణపతి బప్పా మోరియా! మంగళ్ ముర్తి మోరియా!</div>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+
+    <div class="footer-message">
+
+
+        మీ అందరి అంకితభావం, భక్తిశ్రద్ధలు మరియు
+        సమయానుసారి వల్లనే ఈ పండుగ ఇంత అద్భుతంగా
+        మురిసింది.
+
+
+        <br>
+
+
+        ఈ పూజకు ఆశీస్సులు మీ అందరికీ, మీ కుటుంబ
+        సభ్యులందరికీ నడా ఉండాలని, ఆయురారోగ్యాలతో
+        సుఖసంతోషాలతో వర్ధిల్లాలని మనసారా
+        కోరుకుంటున్నాము.
+
+
+        <span class="footer-blessing">
+
+            గణపతి బప్పా మోరియా!
+            మంగళ మూర్తి మోరియా!
+
+        </span>
+
+
+    </div>
+
+
+</footer>
+
+
 
 <script>
-const SPECIAL_NAMES = [
-  "మొదటి ప్రత్యేక పేరు",
-  "రెండవ ప్రత్యేక పేరు",
-  "మూడవ ప్రత్యేక పేరు",
-  "నాలుగవ ప్రత్యేక పేరు",
-  "ఐదవ ప్రత్యేక పేరు"
-];
 
-const PUBLISHED_SHEET_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQrl7VpCJicM0w5OIG8t_ktrwP8hoUCe7SnPp9JoymrWmxF_bIqlVA5laD-3wQbuHYCJRDQxvfe7kLC/pubhtml?gid=0&single=true";
 
-const CSV_URL = PUBLISHED_SHEET_URL
-  .replace("/pubhtml", "/pub")
-  .replace(/[?&]single=true/, "")
-  + "&output=csv";
+/* =====================================================
+   GOOGLE SHEET CSV URL
+===================================================== */
 
-const specialBox = document.getElementById("specialNames");
-const listBox = document.getElementById("devoteeList");
+const CSV_URL =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vQrl7VpCJicM0w5OIG8t_ktrwP8hoUCe7SnPp9JoymrWmxF_bIqlVA5laD-3wQbuHYCJRDQxvfe7kLC/pub?gid=0&single=true&output=csv";
 
-function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g, ch => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[ch]));
-}
 
-function renderSpecialNames(){
-  specialBox.innerHTML = SPECIAL_NAMES.map(name =>
-    `<div class="name-card">${escapeHTML(name)}</div>`
-  ).join("");
-}
+/* =====================================================
+   HTML ELEMENTS
+===================================================== */
 
-function parseCSV(text){
-  const rows = [];
-  let row = [], cell = "", quoted = false;
+const devoteeScroll =
+    document.getElementById(
+        "devoteeScroll"
+    );
 
-  for(let i = 0; i < text.length; i++){
-    const ch = text[i], next = text[i+1];
 
-    if(ch === '"' && quoted && next === '"'){
-      cell += '"'; 
-      i++;
-    } else if(ch === '"'){
-      quoted = !quoted;
-    } else if(ch === "," && !quoted){
-      row.push(cell); 
-      cell = "";
-    } else if((ch === "\n" || ch === "\r") && !quoted){
-      if(ch === "\r" && next === "\n") i++;
-      row.push(cell); 
-      cell = "";
-      if(row.some(v => v.trim() !== "")) rows.push(row);
-      row = [];
-    } else {
-      cell += ch;
-    }
-  }
-  row.push(cell);
-  if(row.some(v => v.trim() !== "")) rows.push(row);
-  return rows;
-}
+const totalCount =
+    document.getElementById(
+        "totalCount"
+    );
 
-function cleanCell(value){
-  return String(value ?? "").trim().replace(/^"|"$/g, "").trim();
-}
 
-/* Gender Prefix based on Column C */
-function getPrefix(name, gender){
-  const cleanN = cleanCell(name);
-  if(!cleanN) return "";
+/* =====================================================
+   LOAD DEVOTEES
+===================================================== */
 
-  // Skip prefix if name already starts with Sri or Srimathi
-  if(/^(శ్రీమతి|శ్రీ|srimathi|srimati|sri|smt\.?|mr\.?|mrs\.?)\b/i.test(cleanN)){
-    return "";
-  }
+async function loadDevotees() {
 
-  const g = cleanCell(gender).toLowerCase();
-  const isFemale = ["female", "f", "woman", "w", "స్త్రీ", "మహిళ", "ఆడ", "srimathi", "smt"].includes(g);
 
-  return isFemale ? "శ్రీమతి " : "శ్రీ ";
-}
+    devoteeScroll.innerHTML = `
 
-async function loadDevotees(){
-  try{
-    let response;
+        <div class="loading">
+
+            భక్తుల పేర్లు
+            లోడ్ అవుతున్నాయి...
+
+        </div>
+
+    `;
+
+
     try {
-      response = await fetch(CSV_URL + "&t=" + Date.now(), {cache:"no-store"});
-      if(!response.ok) throw new Error("Direct fetch failed");
-    } catch(err){
-      response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(CSV_URL)}`);
-    }
 
-    if(!response.ok) throw new Error("Google Sheet could not be loaded.");
-    const csv = await response.text();
-    const rows = parseCSV(csv);
 
-    if(!rows.length){
-      listBox.innerHTML = '<div class="status">షీట్లో పేర్లు లేవు.</div>';
-      return;
-    }
+        const response =
+            await fetch(
 
-    /*
-      Exact column mapping from your sheet:
-      Column A (index 0) = Serial Number / Details
-      Column B (index 1) = Devotee Name
-      Column C (index 2) = Gender
-      Column D (index 3) = Gothram
-    */
-    const NAME_COL = 1;
-    const GENDER_COL = 2;
-    const GOTHRAM_COL = 3;
+                CSV_URL +
+                "&cache=" +
+                Date.now(),
 
-    const devotees = rows.slice(1)
-      .map(row => {
-        const name = cleanCell(row[NAME_COL]);
-        const gender = cleanCell(row[GENDER_COL]);
-        const gothram = cleanCell(row[GOTHRAM_COL]);
+                {
+                    method: "GET",
 
-        // Skip blank rows or header rows
-        if(!name || name.toLowerCase() === "devotee name" || name.startsWith("#")) return null;
+                    cache:
+                        "no-store"
 
-        const prefix = getPrefix(name, gender);
+                }
 
-        // Format Gothram label neatly
-        let gothramDisplay = "";
-        if(gothram){
-          if(gothram.toLowerCase().includes("gothram") || gothram.includes("గోత్రం")){
-            gothramDisplay = gothram;
-          } else {
-            gothramDisplay = "గోత్రం: " + gothram;
-          }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Google Sheet could not be loaded"
+            );
+
         }
 
-        return {
-          displayName: prefix + name,
-          gothram: gothramDisplay
-        };
-      })
-      .filter(Boolean);
 
-    if(!devotees.length){
-      listBox.innerHTML = '<div class="status">భక్తుల వివరాలు కనిపించలేదు.</div>';
-      return;
+        const csvText =
+            await response.text();
+
+
+        if (!csvText.trim()) {
+
+            throw new Error(
+                "Google Sheet is empty"
+            );
+
+        }
+
+
+        console.log(
+            "Google Sheet CSV:",
+            csvText
+        );
+
+
+        const rows =
+            parseCSV(csvText);
+
+
+        console.log(
+            "Parsed Rows:",
+            rows
+        );
+
+
+        const devotees = [];
+
+
+        /* =================================================
+           GOOGLE SHEET COLUMNS
+
+           A = S.No
+           B = Devotee Name
+           C = Gender
+           D = Gothram
+
+           Gender is NOT displayed.
+           It is used only for:
+           
+           Male   → శ్రీ
+           Female → శ్రీమతి
+           
+           "గారు" is added after every name.
+        ================================================== */
+
+
+        rows
+            .slice(1)
+            .forEach(
+                function(row, index) {
+
+
+                    if (!row) {
+                        return;
+                    }
+
+
+                    const sno =
+                        cleanCell(
+                            row[0]
+                        )
+                        ||
+                        (index + 1);
+
+
+                    const name =
+                        cleanCell(
+                            row[1]
+                        );
+
+
+                    const gender =
+                        cleanCell(
+                            row[2]
+                        );
+
+
+                    const gothram =
+                        cleanCell(
+                            row[3]
+                        );
+
+
+                    /*
+                        Ignore empty names
+                    */
+
+                    if (!name) {
+                        return;
+                    }
+
+
+                    /* =================================================
+                       DETERMINE SRI / SRIMATHI
+                    ================================================= */
+
+
+                    let title =
+                        "శ్రీ";
+
+
+                    const genderLower =
+                        gender
+                            .toLowerCase()
+                            .trim();
+
+
+                    /*
+                        MALE
+                    */
+
+                    if (
+
+                        genderLower ===
+                            "male"
+
+                        ||
+
+                        genderLower ===
+                            "m"
+
+                        ||
+
+                        genderLower ===
+                            "man"
+
+                        ||
+
+                        genderLower ===
+                            "పురుషుడు"
+
+                        ||
+
+                        genderLower ===
+                            "పురుష"
+
+                    ) {
+
+                        title =
+                            "శ్రీ";
+
+                    }
+
+
+                    /*
+                        FEMALE
+                    */
+
+                    else if (
+
+                        genderLower ===
+                            "female"
+
+                        ||
+
+                        genderLower ===
+                            "f"
+
+                        ||
+
+                        genderLower ===
+                            "woman"
+
+                        ||
+
+                        genderLower ===
+                            "స్త్రీ"
+
+                        ||
+
+                        genderLower ===
+                            "మహిళ"
+
+                        ||
+
+                        genderLower ===
+                            "మహిళా"
+
+                    ) {
+
+                        title =
+                            "శ్రీమతి";
+
+                    }
+
+
+                    /*
+                        Telugu values with
+                        additional text
+                    */
+
+                    else {
+
+
+                        const genderText =
+                            gender.trim();
+
+
+                        if (
+
+                            genderText.includes(
+                                "స్త్రీ"
+                            )
+
+                            ||
+
+                            genderText.includes(
+                                "మహిళ"
+                            )
+
+                            ||
+
+                            genderText.includes(
+                                "ఆడ"
+                            )
+
+                            ||
+
+                            genderText.includes(
+                                "Female"
+                            )
+
+                            ||
+
+                            genderText.includes(
+                                "female"
+                            )
+
+                        ) {
+
+                            title =
+                                "శ్రీమతి";
+
+                        }
+
+                        else {
+
+                            title =
+                                "శ్రీ";
+
+                        }
+
+                    }
+
+
+                    /* =================================================
+                       FINAL DISPLAY NAME
+
+                       శ్రీ రమేష్ గారు
+                       శ్రీమతి లక్ష్మి గారు
+                    ================================================== */
+
+
+                    const displayName =
+                        title +
+                        " " +
+                        name +
+                        " గారు";
+
+
+                    devotees.push({
+
+                        sno:
+                            sno,
+
+                        name:
+                            displayName,
+
+                        gothram:
+                            gothram
+
+                    });
+
+
+                }
+            );
+
+
+        console.log(
+            "Final Devotees:",
+            devotees
+        );
+
+
+        /* =================================================
+           TOTAL COUNT
+        ================================================== */
+
+        totalCount.textContent =
+            devotees.length;
+
+
+        /* =================================================
+           NO DATA
+        ================================================== */
+
+        if (
+            devotees.length === 0
+        ) {
+
+
+            devoteeScroll.innerHTML = `
+
+                <div class="error">
+
+                    భక్తుల పేర్లు
+                    కనిపించలేదు.
+
+                    <br><br>
+
+                    Google Sheet లో
+                    <b>Column B</b> లో
+                    భక్తుల పేర్లు
+                    ఉన్నాయో తనిఖీ చేయండి.
+
+                </div>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        /* =================================================
+           CREATE DEVOTEE CARDS
+        ================================================== */
+
+        let html = "";
+
+
+        devotees.forEach(
+            function(devotee) {
+
+
+                let gothramHTML =
+                    "";
+
+
+                if (
+                    devotee.gothram
+                ) {
+
+
+                    let gothram =
+                        devotee.gothram;
+
+
+                    /*
+                        Add "గోత్రం:"
+                        automatically if
+                        it isn't already there.
+                    */
+
+                    if (
+                        !gothram.includes(
+                            "గోత్రం"
+                        )
+                    ) {
+
+                        gothram =
+                            "గోత్రం: " +
+                            gothram;
+
+                    }
+
+
+                    gothramHTML = `
+
+                        <div class="devotee-gothram">
+
+                            ${escapeHTML(
+                                gothram
+                            )}
+
+                        </div>
+
+                    `;
+
+                }
+
+
+                html += `
+
+                    <div class="devotee-card">
+
+
+                        <div class="serial-number">
+
+                            ${escapeHTML(
+                                String(
+                                    devotee.sno
+                                )
+                            )}
+
+                        </div>
+
+
+                        <div class="devotee-info">
+
+
+                            <div class="devotee-name">
+
+                                ${escapeHTML(
+                                    devotee.name
+                                )}
+
+                            </div>
+
+
+                            ${gothramHTML}
+
+
+                        </div>
+
+
+                    </div>
+
+                `;
+
+
+            }
+        );
+
+
+        /* =================================================
+           INSERT INTO PAGE
+        ================================================== */
+
+        devoteeScroll.innerHTML =
+            html;
+
+
+        /*
+            Start from first devotee
+        */
+
+        devoteeScroll.scrollTop =
+            0;
+
+
     }
 
-    listBox.innerHTML = devotees.map((devotee, index) => `
-      <div class="devotee">
-        <span class="number">${index + 1}</span>
-        <div class="devotee-name">${escapeHTML(devotee.displayName)}</div>
-        ${devotee.gothram ? `
-          <div class="devotee-gothram">
-            ${escapeHTML(devotee.gothram)}
-          </div>
-        ` : '<div></div>'}
-      </div>
-    `).join("");
 
-  }catch(error){
-    console.error(error);
-    listBox.innerHTML = `
-      <div class="status error">
-        Google Sheet నుండి పేర్లు లోడ్ కాలేదు.<br>
-        Sheet ను Publish to Web చేసి ఉంచండి.
-      </div>`;
-  }
+    catch (error) {
+
+
+        console.error(
+            "Devotee loading error:",
+            error
+        );
+
+
+        totalCount.textContent =
+            "0";
+
+
+        devoteeScroll.innerHTML = `
+
+            <div class="error">
+
+                భక్తుల పేర్లు
+                లోడ్ కాలేదు.
+
+                <br><br>
+
+                Google Sheet
+                Publish to Web
+                settings ను
+                తనిఖీ చేయండి.
+
+            </div>
+
+        `;
+
+    }
+
 }
 
-renderSpecialNames();
+
+/* =====================================================
+   CSV PARSER
+===================================================== */
+
+function parseCSV(text) {
+
+
+    const rows = [];
+
+    let row = [];
+
+    let cell = "";
+
+    let insideQuotes =
+        false;
+
+
+    for (
+        let i = 0;
+        i < text.length;
+        i++
+    ) {
+
+
+        const char =
+            text[i];
+
+
+        const nextChar =
+            text[i + 1];
+
+
+        /*
+            Handle quotes
+        */
+
+        if (
+
+            char === '"'
+
+            &&
+
+            insideQuotes
+
+            &&
+
+            nextChar === '"'
+
+        ) {
+
+
+            cell += '"';
+
+            i++;
+
+            continue;
+
+        }
+
+
+        /*
+            Start / End quote
+        */
+
+        if (
+            char === '"'
+        ) {
+
+
+            insideQuotes =
+                !insideQuotes;
+
+
+            continue;
+
+        }
+
+
+        /*
+            Comma
+        */
+
+        if (
+
+            char === ","
+
+            &&
+
+            !insideQuotes
+
+        ) {
+
+
+            row.push(cell);
+
+            cell = "";
+
+            continue;
+
+        }
+
+
+        /*
+            New line
+        */
+
+        if (
+
+            (
+                char === "\n"
+                ||
+                char === "\r"
+            )
+
+            &&
+
+            !insideQuotes
+
+        ) {
+
+
+            /*
+                Windows CRLF
+            */
+
+            if (
+
+                char === "\r"
+
+                &&
+
+                nextChar === "\n"
+
+            ) {
+
+                i++;
+
+            }
+
+
+            row.push(cell);
+
+            cell = "";
+
+
+            /*
+                Ignore completely
+                empty rows
+            */
+
+            if (
+
+                row.some(
+                    function(value) {
+
+                        return (
+                            value.trim()
+                            !== ""
+                        );
+
+                    }
+                )
+
+            ) {
+
+                rows.push(row);
+
+            }
+
+
+            row = [];
+
+            continue;
+
+        }
+
+
+        cell += char;
+
+    }
+
+
+    /*
+        Last row
+    */
+
+    if (
+
+        cell !== ""
+
+        ||
+
+        row.length > 0
+
+    ) {
+
+
+        row.push(cell);
+
+
+        if (
+
+            row.some(
+                function(value) {
+
+                    return (
+                        value.trim()
+                        !== ""
+                    );
+
+                }
+            )
+
+        ) {
+
+            rows.push(row);
+
+        }
+
+    }
+
+
+    return rows;
+
+}
+
+
+/* =====================================================
+   CLEAN CELL
+===================================================== */
+
+function cleanCell(value) {
+
+
+    if (
+
+        value === undefined
+
+        ||
+
+        value === null
+
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /^\uFEFF/,
+            ""
+        )
+
+        .trim();
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value) {
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
 loadDevotees();
 
-/* Refresh from Google Sheet every 60 seconds */
-setInterval(loadDevotees, 60000);
+
+/* =====================================================
+   AUTOMATIC REFRESH
+
+   Every 5 minutes
+===================================================== */
+
+setInterval(
+
+    loadDevotees,
+
+    5 * 60 * 1000
+
+);
+
 </script>
+
+
 </body>
+
 </html>

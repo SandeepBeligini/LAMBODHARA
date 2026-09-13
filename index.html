@@ -114,19 +114,19 @@
   }
   .devotee-list{
     display:grid;
-    gap:11px;
+    gap:12px;
   }
   .devotee{
     display:grid;
-    grid-template-columns:58px 1fr;
+    grid-template-columns:52px 1fr auto;
     align-items:center;
-    gap:12px;
-    background:rgba(255,255,255,.78);
+    gap:14px;
+    background:rgba(255,255,255,.82);
     border:1px solid rgba(160,105,0,.28);
     border-radius:14px;
-    padding:12px 16px;
+    padding:12px 18px;
     box-shadow:0 4px 13px rgba(70,40,0,.08);
-    font-size:clamp(17px,2.1vw,23px);
+    font-size:clamp(17px,2.1vw,22px);
     font-weight:650;
   }
   .number{
@@ -136,6 +136,26 @@
     background:#a10f42;
     color:white;
     font-weight:900;
+    font-size:18px;
+  }
+  .devotee-name{
+    color:var(--text);
+    word-break:break-word;
+  }
+  .devotee-gothram{
+    font-size:clamp(15px,1.8vw,19px);
+    font-weight:600;
+    color:#704214;
+    background:rgba(255,232,150,.45);
+    border:1px dashed rgba(197,138,0,.5);
+    padding:5px 14px;
+    border-radius:10px;
+    white-space:nowrap;
+  }
+  .gothram-label{
+    color:#a10f42;
+    font-weight:700;
+    margin-right:4px;
   }
   .status{
     text-align:center;
@@ -144,7 +164,7 @@
     font-size:16px;
   }
   .error{color:#a10f42}
-  .footer{text-align:center;opacity:.72;padding:15px}
+  .footer{text-align:center;opacity:.72;padding:15px;line-height:1.6}
 
   @media(max-width:800px){
     .header-inner{grid-template-columns:70px 1fr 70px;min-height:105px;padding:7px 10px}
@@ -152,11 +172,23 @@
     .subtitle{margin-top:7px}
     .special-grid{grid-template-columns:repeat(2,1fr)}
   }
+  @media(max-width:600px){
+    .devotee{
+      grid-template-columns:44px 1fr;
+      row-gap:8px;
+      column-gap:12px;
+      padding:10px 14px;
+    }
+    .devotee-gothram{
+      grid-column:2;
+      justify-self:start;
+      white-space:normal;
+    }
+  }
   @media(max-width:480px){
     .header-inner{grid-template-columns:52px 1fr 52px;gap:5px}
     .logo{width:48px;height:48px}
     .special-grid{grid-template-columns:1fr}
-    .devotee{grid-template-columns:45px 1fr;padding:10px}
   }
 </style>
 </head>
@@ -164,7 +196,6 @@
 <body>
 <header class="site-header">
   <div class="header-inner">
-    <!-- Replace these with your actual logo filenames -->
     <img class="logo" src="left-logo.png" alt="Committee logo">
     <div class="title-wrap">
       <h1 class="title">లంబోధర ఉత్సవ కమిటీ</h1>
@@ -184,14 +215,10 @@
   </section>
 </main>
 
-<div class="footer">మీ అందరి అంకితభావం, భక్తిశ్రద్ధలు మరియు సమయస్ఫూర్తి వల్లనే ఈ పండగ ఇంత అద్భుతంగా ముగిసింది. విఘ్నేశుని ఆశీస్సులు మీ అందరికీ, మీ కుటుంబ సభ్యులందరికీ సదా ఉండాలని, ఆయురారోగ్యాలతో సుఖసంతోషాలతో వర్ధిల్లాలని మనసారా కోరుకుంటున్నాము.గణపతి బప్పా మోరియా! మంగళ్ ముర్తి మోరియా!"</div>
+<div class="footer">మీ అందరి అంకితభావం, భక్తిశ్రద్ధలు మరియు సమయస్ఫూర్తి వల్లనే ఈ పండగ ఇంత అద్భుతంగా ముగిసింది. విఘ్నేశుని ఆశీస్సులు మీ అందరికీ, మీ కుటుంబ సభ్యులందరికీ సదా ఉండాలని, ఆయురారోగ్యాలతో సుఖసంతోషాలతో వర్ధిల్లాలని మనసారా కోరుకుంటున్నాము. 
+  గణపతి బప్పా మోరియా! మంగళ్ ముర్తి మోరియా!</div>
 
 <script>
-/*
-  1) Change only these first five names when required.
-  2) The names below them come from your published Google Sheet.
-  3) The page automatically refreshes the Sheet every 60 seconds.
-*/
 const SPECIAL_NAMES = [
   "మొదటి ప్రత్యేక పేరు",
   "రెండవ ప్రత్యేక పేరు",
@@ -223,7 +250,7 @@ function renderSpecialNames(){
   ).join("");
 }
 
-/* Small CSV parser that supports commas inside quoted cells. */
+/* CSV parser supporting commas and quotes */
 function parseCSV(text){
   const rows = [];
   let row = [], cell = "", quoted = false;
@@ -255,47 +282,117 @@ function cleanCell(value){
   return String(value ?? "").trim().replace(/^"|"$/g,"");
 }
 
-function findNameColumn(headers){
+/* Helper to locate column indices by potential header labels */
+function findColumnIndex(headers, possibleNames, defaultIdx){
   const normalized = headers.map(h => cleanCell(h).toLowerCase());
-  const possible = [
-    "name","names","devotee","devotee name","devotee names",
-    "పేరు","పేర్లు","భక్తుని పేరు","భక్తుల పేర్లు"
-  ];
-  for(const wanted of possible){
-    const idx = normalized.findIndex(h => h === wanted);
+  for(const wanted of possibleNames){
+    const idx = normalized.findIndex(h => h === wanted || h.includes(wanted));
     if(idx >= 0) return idx;
   }
-  return 0; // If there is no header named Name, use the first column.
+  return defaultIdx;
+}
+
+/* Gender evaluation: Returns Sri / Srimathi prefix */
+function getGenderPrefix(name, genderValue){
+  const n = cleanCell(name);
+  if(/^(శ్రీమతి|శ్రీ|sri|smt|mr|mrs|srimathi)\b/i.test(n)){
+    return ""; // Already has prefix
+  }
+  const g = cleanCell(genderValue).toLowerCase();
+  const isFemale = ["female", "f", "woman", "w", "స్త్రీ", "మహిళ", "ఆడ", "srimathi", "smt"].includes(g);
+  return isFemale ? "శ్రీమతి " : "శ్రీ ";
+}
+
+/* Fetch CSV data with fallback proxies in case of CORS blocks */
+async function fetchSheetData(){
+  const endpoints = [
+    `${CSV_URL}&_t=${Date.now()}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(CSV_URL)}`,
+    `https://corsproxy.io/?${encodeURIComponent(CSV_URL)}`
+  ];
+
+  let lastErr = null;
+  for(const url of endpoints){
+    try{
+      const response = await fetch(url, {cache:"no-store"});
+      if(response.ok){
+        const text = await response.text();
+        if(text && text.trim().length > 0) return text;
+      }
+    }catch(err){
+      lastErr = err;
+    }
+  }
+  throw lastErr || new Error("Google Sheet could not be loaded.");
 }
 
 async function loadDevotees(){
   try{
-    const response = await fetch(CSV_URL + "&t=" + Date.now(), {cache:"no-store"});
-    if(!response.ok) throw new Error("Google Sheet could not be loaded.");
-    const csv = await response.text();
+    const csv = await fetchSheetData();
     const rows = parseCSV(csv);
 
     if(!rows.length){
-      listBox.innerHTML = '<div class="status">షీట్‌లో పేర్లు లేవు.</div>';
+      listBox.innerHTML = '<div class="status">షీట్లో వివరాలు లేవు.</div>';
       return;
     }
 
-    const headers = rows[0];
-    const nameCol = findNameColumn(headers);
+    // Determine if the first row is a header
+    const firstRowText = rows[0].map(c => cleanCell(c).toLowerCase()).join(" ");
+    const hasHeader = [
+      "name","devotee","పేరు","భక్తు","gothram","గోత్రం","gender","లింగం","s.no","క్రమ సంఖ్య"
+    ].some(k => firstRowText.includes(k));
 
-    const names = rows.slice(1)
-      .map(row => cleanCell(row[nameCol]))
-      .filter(Boolean);
+    let nameCol = 0, gothramCol = 1, genderCol = 2;
+    let dataRows = rows;
 
-    if(!names.length){
-      listBox.innerHTML = '<div class="status">పేర్లు కనిపించలేదు. Google Sheet లో మొదటి కాలమ్‌లో పేర్లు ఉంచండి.</div>';
+    if(hasHeader){
+      const headers = rows[0];
+      nameCol = findColumnIndex(headers, ["name","devotee","భక్తుని పేరు","భక్తుల పేర్లు","పేరు","దాత పేరు"], 0);
+      gothramCol = findColumnIndex(headers, ["gothram","gotram","గోత్రం","గోత్రము"], 1);
+      genderCol = findColumnIndex(headers, ["gender","sex","లింగం"], 2);
+      dataRows = rows.slice(1);
+    }
+
+    const devotees = [];
+
+    dataRows.forEach(row => {
+      // Support pipe separation if row was pasted in single column
+      let parts = (row.length === 1 && row[0].includes("|"))
+        ? row[0].split("|").map(cleanCell)
+        : row.map(cleanCell);
+
+      // Shift columns if Column 0 is a numeric serial number
+      if(parts.length >= 2 && /^\d+$/.test(parts[0]) && isNaN(parts)){
+        parts = parts.slice(1);
+      }
+
+      const rawName = parts[nameCol] || parts[0] || "";
+      const rawGothram = parts[gothramCol] || parts || "";
+      const rawGender = parts[genderCol] || parts[2] || "";
+
+      if(!rawName || rawName.startsWith("#")) return;
+
+      const prefix = getGenderPrefix(rawName, rawGender);
+      devotees.push({
+        fullName: prefix + rawName,
+        gothram: rawGothram
+      });
+    });
+
+    if(!devotees.length){
+      listBox.innerHTML = '<div class="status">భక్తుల వివరాలు కనిపించలేదు.</div>';
       return;
     }
 
-    listBox.innerHTML = names.map((name,index) => `
+    listBox.innerHTML = devotees.map((d, index) => `
       <div class="devotee">
         <span class="number">${index + 1}</span>
-        <span>${escapeHTML(name)}</span>
+        <div class="devotee-name">${escapeHTML(d.fullName)}</div>
+        ${d.gothram ? `
+          <div class="devotee-gothram">
+            <span class="gothram-label">గోత్రం:</span>${escapeHTML(d.gothram)}
+          </div>
+        ` : ''}
       </div>
     `).join("");
 
@@ -303,7 +400,7 @@ async function loadDevotees(){
     console.error(error);
     listBox.innerHTML = `
       <div class="status error">
-        Google Sheet నుండి పేర్లు లోడ్ కాలేదు.<br>
+        Google Sheet నుండి వివరాలు లోడ్ కాలేదు.<br>
         Sheet ను Publish to Web చేసి ఉంచండి.
       </div>`;
   }
@@ -312,7 +409,7 @@ async function loadDevotees(){
 renderSpecialNames();
 loadDevotees();
 
-/* New names added to the published Sheet appear automatically. */
+/* Automatically refresh the list from Google Sheet every 60 seconds */
 setInterval(loadDevotees, 60000);
 </script>
 </body>

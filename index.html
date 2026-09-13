@@ -1,389 +1,743 @@
+```html
 <!DOCTYPE html>
 <html lang="te">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>లంబోధర ఉత్సవ కమిటీ</title>
-<style>
-  :root{
-    --gold:#c58a00;
-    --title:#a10f42;
-    --subtitle:#c94d1c;
-    --paper:#fff8d9;
-    --card:rgba(255,255,255,.82);
-    --text:#3d2a18;
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;
-    font-family:"Noto Sans Telugu","Nirmala UI","Gautami",Arial,sans-serif;
-    color:var(--text);
-    min-height:100vh;
-    background:
-      radial-gradient(circle at 10% 10%, rgba(255,255,255,.75), transparent 28%),
-      radial-gradient(circle at 90% 20%, rgba(255,215,90,.28), transparent 30%),
-      linear-gradient(135deg,#fff7d2,#ffe9ad,#fff9df,#f9e4a5);
-    background-size:180% 180%;
-    animation:bgMove 16s ease-in-out infinite alternate;
-  }
-  @keyframes bgMove{
-    from{background-position:0% 20%}
-    to{background-position:100% 80%}
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  .site-header{
-    position:sticky;
-    top:0;
-    z-index:1000;
-    background:rgba(255,248,217,.96);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    border-bottom:5px solid var(--gold);
-    box-shadow:0 4px 18px rgba(90,55,0,.14);
-  }
-  .header-inner{
-    min-height:165px;
-    display:grid;
-    grid-template-columns:125px 1fr 125px;
-    align-items:center;
-    gap:16px;
-    padding:12px 28px 10px;
-  }
-  .logo{
-    width:110px;
-    height:110px;
-    margin:auto;
-    object-fit:contain;
-    border-radius:8px;
-    background:rgba(255,255,255,.35);
-  }
-  .title-wrap{text-align:center}
-  .title{
-    margin:0;
-    color:var(--title);
-    font-size:clamp(32px,5vw,68px);
-    line-height:1.05;
-    font-weight:900;
-    letter-spacing:.02em;
-    text-shadow:2px 3px 0 rgba(115,20,45,.16);
-  }
-  .subtitle{
-    margin:14px 0 0;
-    color:var(--subtitle);
-    font-size:clamp(18px,2.5vw,34px);
-    line-height:1.15;
-    font-weight:800;
-  }
+    <title>లంబోధర ఉత్సవ కమిటీ</title>
 
-  main{
-    width:min(1050px,94%);
-    margin:28px auto 70px;
-  }
-  .section-title{
-    text-align:center;
-    color:#8f143f;
-    margin:12px 0 20px;
-    font-size:clamp(24px,4vw,40px);
-  }
-  .special-grid{
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:14px;
-    margin-bottom:28px;
-  }
-  .name-card{
-    background:var(--card);
-    border:2px solid rgba(197,138,0,.55);
-    border-radius:18px;
-    padding:18px 10px;
-    min-height:76px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    font-size:clamp(17px,2vw,23px);
-    font-weight:800;
-    box-shadow:0 7px 20px rgba(80,45,0,.12);
-  }
-  .special-grid .name-card{
-    background:linear-gradient(145deg,#fff7ca,#ffe6a1);
-    border-color:#b98000;
-    color:#86133c;
-  }
-  .devotee-list{
-    display:grid;
-    gap:12px;
-  }
-  .devotee{
-    display:grid;
-    grid-template-columns:52px 1fr auto;
-    align-items:center;
-    gap:16px;
-    background:rgba(255,255,255,.82);
-    border:1px solid rgba(160,105,0,.28);
-    border-radius:14px;
-    padding:12px 20px;
-    box-shadow:0 4px 13px rgba(70,40,0,.08);
-    font-size:clamp(17px,2.1vw,23px);
-    font-weight:650;
-  }
-  .number{
-    width:42px;height:42px;
-    border-radius:50%;
-    display:grid;place-items:center;
-    background:#a10f42;
-    color:white;
-    font-weight:900;
-    font-size:18px;
-  }
-  .devotee-name{
-    color:var(--text);
-    word-break:break-word;
-  }
-  .devotee-gothram{
-    color:#734413;
-    font-size:clamp(15px,1.9vw,20px);
-    font-weight:600;
-    background:rgba(255,232,150,.45);
-    border:1px dashed rgba(197,138,0,.45);
-    padding:4px 14px;
-    border-radius:10px;
-    white-space:nowrap;
-  }
-  .status{
-    text-align:center;
-    padding:18px;
-    color:#795a35;
-    font-size:16px;
-  }
-  .error{color:#a10f42}
-  .footer{text-align:center;opacity:.72;padding:15px;line-height:1.6}
+    <link rel="stylesheet" href="style.css">
 
-  @media(max-width:800px){
-    .header-inner{grid-template-columns:70px 1fr 70px;min-height:105px;padding:7px 10px}
-    .logo{width:62px;height:62px}
-    .subtitle{margin-top:7px}
-    .special-grid{grid-template-columns:repeat(2,1fr)}
-  }
-  @media(max-width:640px){
-    .devotee{
-      grid-template-columns:45px 1fr;
-      row-gap:8px;
-      column-gap:12px;
-      padding:10px 14px;
-    }
-    .devotee-gothram{
-      grid-column:2;
-      justify-self:start;
-      white-space:normal;
-    }
-  }
-  @media(max-width:480px){
-    .header-inner{grid-template-columns:52px 1fr 52px;gap:5px}
-    .logo{width:48px;height:48px}
-    .special-grid{grid-template-columns:1fr}
-  }
-</style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Noto Sans Telugu", Arial, sans-serif;
+            background: #fff8ef;
+            color: #3b210f;
+        }
+
+        header {
+            text-align: center;
+            padding: 25px 15px;
+            background: linear-gradient(135deg, #fff1d6, #ffe0a3);
+            border-bottom: 2px solid #e5a84b;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            font-size: 17px;
+        }
+
+        .container {
+            width: min(1000px, 94%);
+            margin: 25px auto;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 14px 16px;
+            border: 1px solid #d9b47a;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 16px;
+            outline: none;
+            background: white;
+        }
+
+        .search-box input:focus {
+            border-color: #c77700;
+            box-shadow: 0 0 0 3px rgba(199, 119, 0, 0.12);
+        }
+
+        .search-box button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #c76f00;
+            color: white;
+            font-family: inherit;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .search-box button:hover {
+            background: #a95c00;
+        }
+
+        .summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            margin-bottom: 15px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(100, 60, 20, 0.08);
+        }
+
+        .summary strong {
+            color: #a85700;
+        }
+
+        #devoteeList {
+            display: grid;
+            gap: 12px;
+        }
+
+        .devotee {
+            display: grid;
+            grid-template-columns: 55px 1fr;
+            gap: 15px;
+            align-items: center;
+            padding: 15px 18px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #f0d8b0;
+            box-shadow: 0 3px 12px rgba(100, 60, 20, 0.06);
+        }
+
+        .number {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #fff0d0;
+            color: #a85700;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .devotee-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #44230e;
+        }
+
+        .devotee-details {
+            margin-top: 4px;
+            font-size: 14px;
+            color: #806044;
+        }
+
+        .status {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            color: #806044;
+        }
+
+        .error {
+            color: #b3261e;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 15px;
+            margin-top: 30px;
+            background: #fff0d0;
+            color: #70451f;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 25px;
+            }
+
+            header p {
+                font-size: 14px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-box button {
+                width: 100%;
+            }
+
+            .devotee {
+                grid-template-columns: 45px 1fr;
+                padding: 12px;
+                gap: 10px;
+            }
+
+            .devotee-name {
+                font-size: 17px;
+            }
+
+            .number {
+                width: 36px;
+                height: 36px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-<header class="site-header">
-  <div class="header-inner">
-    <img class="logo" src="left-logo.png" alt="Committee logo">
-    <div class="title-wrap">
-      <h1 class="title">లంబోధర ఉత్సవ కమిటీ</h1>
-      <p class="subtitle">వికలాంగుల కాలనీ, బైపాస్ రోడ్డు, ఖమ్మం</p>
-    </div>
-    <img class="logo" src="right-logo.png" alt="Committee emblem">
-  </div>
+
+<header>
+    <h1>🙏 లంబోధర ఉత్సవ కమిటీ 🙏</h1>
+    <p>భక్తుల వివరాలు</p>
 </header>
 
-<main>
-  <h2 class="section-title">ప్రత్యేక ధాతలు</h2>
-  <section id="specialNames" class="special-grid"></section>
+<div class="container">
 
-  <h2 class="section-title">భక్తుల పేర్లు</h2>
-  <section id="devoteeList" class="devotee-list">
-    <div class="status">పేర్లు లోడ్ అవుతున్నాయి...</div>
-  </section>
-</main>
+    <div class="search-box">
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="భక్తుని పేరు / గోత్రం కోసం వెతకండి..."
+            autocomplete="off"
+        >
 
-<div class="footer">మీ అందరి అంకితభావం, భక్తిశ్రద్ధలు మరియు సమయస్ఫూర్తి వల్లనే ఈ పండగ ఇంత అద్భుతంగా ముగిసింది. విఘ్నేశుని ఆశీస్సులు మీ అందరికీ, మీ కుటుంబ సభ్యులందరికీ సదా ఉండాలని, ఆయురారోగ్యాలతో సుఖసంతోషాలతో వర్ధిల్లాలని మనసారా కోరుకుంటున్నాము. 
-  గణపతి బప్పా మోరియా! మంగళ్ ముర్తి మోరియా!</div>
+        <button onclick="clearSearch()">
+            క్లియర్
+        </button>
+    </div>
+
+    <div class="summary">
+        <span>
+            మొత్తం భక్తులు:
+            <strong id="totalCount">0</strong>
+        </span>
+
+        <span>
+            చూపిస్తున్నవి:
+            <strong id="shownCount">0</strong>
+        </span>
+    </div>
+
+    <div id="devoteeList">
+        <div class="status">
+            భక్తుల పేర్లు లోడ్ అవుతున్నాయి...
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    © లంబోధర ఉత్సవ కమిటీ
+</footer>
+
 
 <script>
-const SPECIAL_NAMES = [
-  "మొదటి ప్రత్యేక పేరు",
-  "రెండవ ప్రత్యేక పేరు",
-  "మూడవ ప్రత్యేక పేరు",
-  "నాలుగవ ప్రత్యేక పేరు",
-  "ఐదవ ప్రత్యేక పేరు"
-];
 
-const PUBLISHED_SHEET_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQrl7VpCJicM0w5OIG8t_ktrwP8hoUCe7SnPp9JoymrWmxF_bIqlVA5laD-3wQbuHYCJRDQxvfe7kLC/pubhtml?gid=0&single=true";
+/* ============================================================
+   GOOGLE SHEET CSV URL
+   ============================================================ */
 
-const CSV_URL = PUBLISHED_SHEET_URL
-  .replace("/pubhtml", "/pub")
-  .replace(/[?&]single=true/, "")
-  + "&output=csv";
+const CSV_URL =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vQrl7VpCJicM0w5OIG8t_ktrwP8hoUCe7SnPp9JoymrWmxF_bIqlVA5laD-3wQbuHYCJRDQxvfe7kLC/pub?gid=0&single=true&output=csv";
 
-const specialBox = document.getElementById("specialNames");
-const listBox = document.getElementById("devoteeList");
 
-function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g, ch => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[ch]));
-}
+/* ============================================================
+   VARIABLES
+   ============================================================ */
 
-function renderSpecialNames(){
-  specialBox.innerHTML = SPECIAL_NAMES.map(name =>
-    `<div class="name-card">${escapeHTML(name)}</div>`
-  ).join("");
-}
+let devotees = [];
 
-function parseCSV(text){
-  const rows = [];
-  let row = [], cell = "", quoted = false;
+const devoteeList = document.getElementById("devoteeList");
+const searchInput = document.getElementById("searchInput");
+const totalCount = document.getElementById("totalCount");
+const shownCount = document.getElementById("shownCount");
 
-  for(let i = 0; i < text.length; i++){
-    const ch = text[i], next = text[i+1];
 
-    if(ch === '"' && quoted && next === '"'){
-      cell += '"'; 
-      i++;
-    } else if(ch === '"'){
-      quoted = !quoted;
-    } else if(ch === "," && !quoted){
-      row.push(cell); 
-      cell = "";
-    } else if((ch === "\n" || ch === "\r") && !quoted){
-      if(ch === "\r" && next === "\n") i++;
-      row.push(cell); 
-      cell = "";
-      if(row.some(v => v.trim() !== "")) rows.push(row);
-      row = [];
-    } else {
-      cell += ch;
-    }
-  }
-  row.push(cell);
-  if(row.some(v => v.trim() !== "")) rows.push(row);
-  return rows;
-}
+/* ============================================================
+   LOAD GOOGLE SHEET
+   ============================================================ */
 
-function cleanCell(value){
-  return String(value ?? "").trim().replace(/^"|"$/g, "").trim();
-}
+async function loadDevotees() {
 
-/* Gender Prefix based on Column C */
-function getPrefix(name, gender){
-  const cleanN = cleanCell(name);
-  if(!cleanN) return "";
+    devoteeList.innerHTML = `
+        <div class="status">
+            భక్తుల పేర్లు లోడ్ అవుతున్నాయి...
+        </div>
+    `;
 
-  // Skip prefix if name already starts with Sri or Srimathi
-  if(/^(శ్రీమతి|శ్రీ|srimathi|srimati|sri|smt\.?|mr\.?|mrs\.?)\b/i.test(cleanN)){
-    return "";
-  }
-
-  const g = cleanCell(gender).toLowerCase();
-  const isFemale = ["female", "f", "woman", "w", "స్త్రీ", "మహిళ", "ఆడ", "srimathi", "smt"].includes(g);
-
-  return isFemale ? "శ్రీమతి " : "శ్రీ ";
-}
-
-async function loadDevotees(){
-  try{
-    let response;
     try {
-      response = await fetch(CSV_URL + "&t=" + Date.now(), {cache:"no-store"});
-      if(!response.ok) throw new Error("Direct fetch failed");
-    } catch(err){
-      response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(CSV_URL)}`);
-    }
 
-    if(!response.ok) throw new Error("Google Sheet could not be loaded.");
-    const csv = await response.text();
-    const rows = parseCSV(csv);
+        const url = CSV_URL + "&cache=" + Date.now();
 
-    if(!rows.length){
-      listBox.innerHTML = '<div class="status">షీట్లో పేర్లు లేవు.</div>';
-      return;
-    }
+        const response = await fetch(url, {
+            method: "GET",
+            cache: "no-store"
+        });
 
-    /*
-      Exact column mapping from your sheet:
-      Column A (index 0) = Serial Number / Details
-      Column B (index 1) = Devotee Name
-      Column C (index 2) = Gender
-      Column D (index 3) = Gothram
-    */
-    const NAME_COL = 1;
-    const GENDER_COL = 2;
-    const GOTHRAM_COL = 3;
-
-    const devotees = rows.slice(1)
-      .map(row => {
-        const name = cleanCell(row[NAME_COL]);
-        const gender = cleanCell(row[GENDER_COL]);
-        const gothram = cleanCell(row[GOTHRAM_COL]);
-
-        // Skip blank rows or header rows
-        if(!name || name.toLowerCase() === "devotee name" || name.startsWith("#")) return null;
-
-        const prefix = getPrefix(name, gender);
-
-        // Format Gothram label neatly
-        let gothramDisplay = "";
-        if(gothram){
-          if(gothram.toLowerCase().includes("gothram") || gothram.includes("గోత్రం")){
-            gothramDisplay = gothram;
-          } else {
-            gothramDisplay = "గోత్రం: " + gothram;
-          }
+        if (!response.ok) {
+            throw new Error(
+                "Google Sheet could not be loaded. HTTP " +
+                response.status
+            );
         }
 
-        return {
-          displayName: prefix + name,
-          gothram: gothramDisplay
-        };
-      })
-      .filter(Boolean);
+        const csvText = await response.text();
 
-    if(!devotees.length){
-      listBox.innerHTML = '<div class="status">భక్తుల వివరాలు కనిపించలేదు.</div>';
-      return;
+        console.log("Google Sheet CSV:");
+        console.log(csvText);
+
+        if (!csvText.trim()) {
+            throw new Error("Google Sheet returned empty data");
+        }
+
+        const rows = parseCSV(csvText);
+
+        console.log("Parsed rows:");
+        console.log(rows);
+
+        if (!rows || rows.length === 0) {
+            throw new Error("No rows found");
+        }
+
+
+        /* ----------------------------------------------------
+           EXPECTED COLUMNS
+
+           A = S.No
+           B = Devotee Name
+           C = Gender
+           D = Gothram
+        ---------------------------------------------------- */
+
+        devotees = [];
+
+        rows.slice(1).forEach((row, index) => {
+
+            if (!row) return;
+
+            const sno =
+                cleanCell(row[0]) || (index + 1);
+
+            const name =
+                cleanCell(row[1]);
+
+            const gender =
+                cleanCell(row[2]);
+
+            const gothram =
+                cleanCell(row[3]);
+
+
+            // Skip completely empty rows
+            if (!name) {
+                return;
+            }
+
+
+            devotees.push({
+                sno: sno,
+                name: name,
+                gender: gender,
+                gothram: gothram
+            });
+
+        });
+
+
+        console.log("Devotees loaded:", devotees);
+
+
+        if (devotees.length === 0) {
+
+            devoteeList.innerHTML = `
+                <div class="status">
+                    భక్తుల పేర్లు కనిపించలేదు.
+                    <br><br>
+                    Google Sheet లో B Column
+                    <b>Devotee Name</b> ఉందో చూడండి.
+                </div>
+            `;
+
+            totalCount.textContent = "0";
+            shownCount.textContent = "0";
+
+            return;
+        }
+
+
+        totalCount.textContent = devotees.length;
+
+        displayDevotees(devotees);
+
     }
 
-    listBox.innerHTML = devotees.map((devotee, index) => `
-      <div class="devotee">
-        <span class="number">${index + 1}</span>
-        <div class="devotee-name">${escapeHTML(devotee.displayName)}</div>
-        ${devotee.gothram ? `
-          <div class="devotee-gothram">
-            ${escapeHTML(devotee.gothram)}
-          </div>
-        ` : '<div></div>'}
-      </div>
-    `).join("");
+    catch (error) {
 
-  }catch(error){
-    console.error(error);
-    listBox.innerHTML = `
-      <div class="status error">
-        Google Sheet నుండి పేర్లు లోడ్ కాలేదు.<br>
-        Sheet ను Publish to Web చేసి ఉంచండి.
-      </div>`;
-  }
+        console.error(
+            "Devotee loading error:",
+            error
+        );
+
+        devoteeList.innerHTML = `
+            <div class="status error">
+
+                భక్తుల పేర్లు లోడ్ కాలేదు.
+
+                <br><br>
+
+                Google Sheet Publish to Web
+                settings ను తనిఖీ చేయండి.
+
+                <br><br>
+
+                <small>
+                    ${escapeHTML(error.message)}
+                </small>
+
+            </div>
+        `;
+
+        totalCount.textContent = "0";
+        shownCount.textContent = "0";
+    }
 }
 
-renderSpecialNames();
+
+/* ============================================================
+   DISPLAY DEVOTEES
+   ============================================================ */
+
+function displayDevotees(list) {
+
+    shownCount.textContent = list.length;
+
+    if (list.length === 0) {
+
+        devoteeList.innerHTML = `
+            <div class="status">
+                భక్తులు ఎవరూ కనిపించలేదు.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    devoteeList.innerHTML = list.map(devotee => {
+
+        let details = [];
+
+        if (devotee.gender) {
+            details.push(
+                escapeHTML(devotee.gender)
+            );
+        }
+
+        if (devotee.gothram) {
+
+            let gothramText =
+                devotee.gothram;
+
+            if (
+                !gothramText.includes("గోత్రం")
+            ) {
+                gothramText =
+                    "గోత్రం: " + gothramText;
+            }
+
+            details.push(
+                escapeHTML(gothramText)
+            );
+        }
+
+
+        return `
+
+            <div class="devotee">
+
+                <div class="number">
+                    ${escapeHTML(
+                        String(devotee.sno)
+                    )}
+                </div>
+
+                <div>
+
+                    <div class="devotee-name">
+                        ${escapeHTML(
+                            devotee.name
+                        )}
+                    </div>
+
+                    ${
+                        details.length > 0
+                        ?
+                        `
+                        <div class="devotee-details">
+                            ${details.join(" • ")}
+                        </div>
+                        `
+                        :
+                        ""
+                    }
+
+                </div>
+
+            </div>
+
+        `;
+
+    }).join("");
+}
+
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+
+searchInput.addEventListener(
+    "input",
+    function () {
+
+        const searchText =
+            this.value
+                .trim()
+                .toLowerCase();
+
+
+        if (!searchText) {
+
+            displayDevotees(devotees);
+
+            return;
+        }
+
+
+        const filtered =
+            devotees.filter(devotee => {
+
+                const name =
+                    devotee.name
+                        .toLowerCase();
+
+                const gender =
+                    devotee.gender
+                        .toLowerCase();
+
+                const gothram =
+                    devotee.gothram
+                        .toLowerCase();
+
+                const sno =
+                    String(devotee.sno)
+                        .toLowerCase();
+
+
+                return (
+                    name.includes(searchText) ||
+                    gender.includes(searchText) ||
+                    gothram.includes(searchText) ||
+                    sno.includes(searchText)
+                );
+
+            });
+
+
+        displayDevotees(filtered);
+
+    }
+);
+
+
+/* ============================================================
+   CLEAR SEARCH
+   ============================================================ */
+
+function clearSearch() {
+
+    searchInput.value = "";
+
+    displayDevotees(devotees);
+
+    searchInput.focus();
+}
+
+
+/* ============================================================
+   CSV PARSER
+   Handles commas and quoted values correctly
+   ============================================================ */
+
+function parseCSV(text) {
+
+    const rows = [];
+
+    let row = [];
+
+    let cell = "";
+
+    let insideQuotes = false;
+
+
+    for (let i = 0; i < text.length; i++) {
+
+        const char = text[i];
+
+        const nextChar =
+            text[i + 1];
+
+
+        if (char === '"' && insideQuotes && nextChar === '"') {
+
+            cell += '"';
+
+            i++;
+
+            continue;
+        }
+
+
+        if (char === '"') {
+
+            insideQuotes =
+                !insideQuotes;
+
+            continue;
+        }
+
+
+        if (char === "," && !insideQuotes) {
+
+            row.push(cell);
+
+            cell = "";
+
+            continue;
+        }
+
+
+        if (
+            (char === "\n" || char === "\r") &&
+            !insideQuotes
+        ) {
+
+            if (
+                char === "\r" &&
+                nextChar === "\n"
+            ) {
+                i++;
+            }
+
+            row.push(cell);
+
+            cell = "";
+
+            if (row.some(
+                value =>
+                    value.trim() !== ""
+            )) {
+                rows.push(row);
+            }
+
+            row = [];
+
+            continue;
+        }
+
+
+        cell += char;
+
+    }
+
+
+    if (cell !== "" || row.length > 0) {
+
+        row.push(cell);
+
+        if (row.some(
+            value =>
+                value.trim() !== ""
+        )) {
+            rows.push(row);
+        }
+
+    }
+
+
+    return rows;
+}
+
+
+/* ============================================================
+   CLEAN CELL
+   ============================================================ */
+
+function cleanCell(value) {
+
+    if (
+        value === undefined ||
+        value === null
+    ) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/^\uFEFF/, "")
+        .trim();
+}
+
+
+/* ============================================================
+   SECURITY / HTML ESCAPE
+   ============================================================ */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* ============================================================
+   INITIAL LOAD
+   ============================================================ */
+
 loadDevotees();
 
-/* Refresh from Google Sheet every 60 seconds */
-setInterval(loadDevotees, 60000);
+
+/* ============================================================
+   AUTOMATIC REFRESH
+   Every 5 minutes
+   ============================================================ */
+
+setInterval(
+    loadDevotees,
+    5 * 60 * 1000
+);
+
 </script>
+
 </body>
 </html>
+```

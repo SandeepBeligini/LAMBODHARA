@@ -32,7 +32,7 @@
     to{background-position:100% 80%}
   }
 
-  /* Fixed header: remains visible while scrolling */
+  /* Fixed header */
   .site-header{
     position:sticky;
     top:0;
@@ -114,19 +114,19 @@
   }
   .devotee-list{
     display:grid;
-    gap:12px;
+    gap:11px;
   }
   .devotee{
     display:grid;
     grid-template-columns:52px 1fr auto;
     align-items:center;
-    gap:14px;
+    gap:16px;
     background:rgba(255,255,255,.82);
     border:1px solid rgba(160,105,0,.28);
     border-radius:14px;
-    padding:12px 18px;
+    padding:12px 20px;
     box-shadow:0 4px 13px rgba(70,40,0,.08);
-    font-size:clamp(17px,2.1vw,22px);
+    font-size:clamp(17px,2.1vw,23px);
     font-weight:650;
   }
   .number{
@@ -143,19 +143,14 @@
     word-break:break-word;
   }
   .devotee-gothram{
-    font-size:clamp(15px,1.8vw,19px);
+    color:#734413;
+    font-size:clamp(15px,1.9vw,20px);
     font-weight:600;
-    color:#704214;
     background:rgba(255,232,150,.45);
-    border:1px dashed rgba(197,138,0,.5);
-    padding:5px 14px;
+    border:1px dashed rgba(197,138,0,.45);
+    padding:4px 14px;
     border-radius:10px;
     white-space:nowrap;
-  }
-  .gothram-label{
-    color:#a10f42;
-    font-weight:700;
-    margin-right:4px;
   }
   .status{
     text-align:center;
@@ -172,9 +167,9 @@
     .subtitle{margin-top:7px}
     .special-grid{grid-template-columns:repeat(2,1fr)}
   }
-  @media(max-width:600px){
+  @media(max-width:640px){
     .devotee{
-      grid-template-columns:44px 1fr;
+      grid-template-columns:45px 1fr;
       row-gap:8px;
       column-gap:12px;
       padding:10px 14px;
@@ -250,23 +245,26 @@ function renderSpecialNames(){
   ).join("");
 }
 
-/* CSV parser supporting commas and quotes */
+/* CSV Parser */
 function parseCSV(text){
   const rows = [];
   let row = [], cell = "", quoted = false;
 
-  for(let i=0;i<text.length;i++){
+  for(let i = 0; i < text.length; i++){
     const ch = text[i], next = text[i+1];
 
     if(ch === '"' && quoted && next === '"'){
-      cell += '"'; i++;
+      cell += '"'; 
+      i++;
     } else if(ch === '"'){
       quoted = !quoted;
     } else if(ch === "," && !quoted){
-      row.push(cell); cell = "";
+      row.push(cell); 
+      cell = "";
     } else if((ch === "\n" || ch === "\r") && !quoted){
       if(ch === "\r" && next === "\n") i++;
-      row.push(cell); cell = "";
+      row.push(cell); 
+      cell = "";
       if(row.some(v => v.trim() !== "")) rows.push(row);
       row = [];
     } else {
@@ -279,103 +277,119 @@ function parseCSV(text){
 }
 
 function cleanCell(value){
-  return String(value ?? "").trim().replace(/^"|"$/g,"");
+  return String(value ?? "").trim().replace(/^"|"$/g, "").trim();
 }
 
-/* Helper to locate column indices by potential header labels */
-function findColumnIndex(headers, possibleNames, defaultIdx){
-  const normalized = headers.map(h => cleanCell(h).toLowerCase());
-  for(const wanted of possibleNames){
-    const idx = normalized.findIndex(h => h === wanted || h.includes(wanted));
-    if(idx >= 0) return idx;
+/* Detect Column Positions in the Sheet */
+function detectColumns(headers){
+  const norm = headers.map(h => cleanCell(h).toLowerCase());
+
+  let nameCol = -1;
+  const nameKeys = ["name", "names", "devotee", "devotee name", "పేరు", "పేర్లు", "భక్తుని పేరు", "భక్తుల పేర్లు", "దాత పేరు"];
+  for(const k of nameKeys){
+    const idx = norm.findIndex(h => h === k || h.includes(k));
+    if(idx >= 0){ nameCol = idx; break; }
   }
-  return defaultIdx;
+
+  let gothramCol = -1;
+  const gothramKeys = ["gothram", "gotram", "gothra", "gotra", "గోత్రం", "గోత్రము"];
+  for(const k of gothramKeys){
+    const idx = norm.findIndex(h => h === k || h.includes(k));
+    if(idx >= 0){ gothramCol = idx; break; }
+  }
+
+  let genderCol = -1;
+  const genderKeys = ["gender", "sex", "లింగం", "జాతి"];
+  for(const k of genderKeys){
+    const idx = norm.findIndex(h => h === k || h.includes(k));
+    if(idx >= 0){ genderCol = idx; break; }
+  }
+
+  // If first column is S.No (e.g. S.No, Name, Gothram, Gender), shift default index by 1
+  const isFirstColSno = ["s.no", "sl.no", "sno", "serial", "no", "క్రమ సంఖ్య"].some(k => norm[0] && norm[0].includes(k));
+  const defaultOffset = isFirstColSno ? 1 : 0;
+
+  if(nameCol === -1) nameCol = defaultOffset;
+  if(gothramCol === -1) gothramCol = defaultOffset + 1;
+  if(genderCol === -1) genderCol = defaultOffset + 2;
+
+  return { nameCol, gothramCol, genderCol };
 }
 
-/* Gender evaluation: Returns Sri / Srimathi prefix */
-function getGenderPrefix(name, genderValue){
-  const n = cleanCell(name);
-  if(/^(శ్రీమతి|శ్రీ|sri|smt|mr|mrs|srimathi)\b/i.test(n)){
-    return ""; // Already has prefix
+function isHeaderRow(row){
+  const text = row.map(c => cleanCell(c).toLowerCase()).join(" ");
+  return (
+    ["name", "devotee", "పేరు", "భక్తు"].some(k => text.includes(k)) ||
+    ["gothram", "gotram", "గోత్రం"].some(k => text.includes(k)) ||
+    ["gender", "sex", "లింగం"].some(k => text.includes(k)) ||
+    ["s.no", "sl.no", "క్రమ సంఖ్య"].some(k => text.includes(k))
+  );
+}
+
+/* Gender Honorific: శ్రీ or శ్రీమతి */
+function getGenderPrefix(name, gender){
+  const cleanN = cleanCell(name);
+  if(!cleanN) return "";
+
+  // Avoid duplicating if the sheet already contains an honorific
+  if(/^(శ్రీమతి|శ్రీ|srimathi|srimati|sri|smt\.?|mr\.?|mrs\.?)\s+/i.test(cleanN)){
+    return "";
   }
-  const g = cleanCell(genderValue).toLowerCase();
+
+  const g = cleanCell(gender).toLowerCase();
   const isFemale = ["female", "f", "woman", "w", "స్త్రీ", "మహిళ", "ఆడ", "srimathi", "smt"].includes(g);
+
   return isFemale ? "శ్రీమతి " : "శ్రీ ";
-}
-
-/* Fetch CSV data with fallback proxies in case of CORS blocks */
-async function fetchSheetData(){
-  const endpoints = [
-    `${CSV_URL}&_t=${Date.now()}`,
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(CSV_URL)}`,
-    `https://corsproxy.io/?${encodeURIComponent(CSV_URL)}`
-  ];
-
-  let lastErr = null;
-  for(const url of endpoints){
-    try{
-      const response = await fetch(url, {cache:"no-store"});
-      if(response.ok){
-        const text = await response.text();
-        if(text && text.trim().length > 0) return text;
-      }
-    }catch(err){
-      lastErr = err;
-    }
-  }
-  throw lastErr || new Error("Google Sheet could not be loaded.");
 }
 
 async function loadDevotees(){
   try{
-    const csv = await fetchSheetData();
+    let response;
+    try {
+      response = await fetch(CSV_URL + "&t=" + Date.now(), {cache:"no-store"});
+      if(!response.ok) throw new Error("Direct fetch failed");
+    } catch(err){
+      response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(CSV_URL)}`);
+    }
+
+    if(!response.ok) throw new Error("Google Sheet could not be loaded.");
+    const csv = await response.text();
     const rows = parseCSV(csv);
 
     if(!rows.length){
-      listBox.innerHTML = '<div class="status">షీట్లో వివరాలు లేవు.</div>';
+      listBox.innerHTML = '<div class="status">షీట్లో పేర్లు లేవు.</div>';
       return;
     }
 
-    // Determine if the first row is a header
-    const firstRowText = rows[0].map(c => cleanCell(c).toLowerCase()).join(" ");
-    const hasHeader = [
-      "name","devotee","పేరు","భక్తు","gothram","గోత్రం","gender","లింగం","s.no","క్రమ సంఖ్య"
-    ].some(k => firstRowText.includes(k));
-
-    let nameCol = 0, gothramCol = 1, genderCol = 2;
-    let dataRows = rows;
-
-    if(hasHeader){
-      const headers = rows[0];
-      nameCol = findColumnIndex(headers, ["name","devotee","భక్తుని పేరు","భక్తుల పేర్లు","పేరు","దాత పేరు"], 0);
-      gothramCol = findColumnIndex(headers, ["gothram","gotram","గోత్రం","గోత్రము"], 1);
-      genderCol = findColumnIndex(headers, ["gender","sex","లింగం"], 2);
-      dataRows = rows.slice(1);
-    }
+    const hasHeader = isHeaderRow(rows[0]);
+    const { nameCol, gothramCol, genderCol } = detectColumns(rows[0]);
+    const dataRows = hasHeader ? rows.slice(1) : rows;
 
     const devotees = [];
 
     dataRows.forEach(row => {
-      // Support pipe separation if row was pasted in single column
-      let parts = (row.length === 1 && row[0].includes("|"))
+      const cells = (row.length === 1 && row[0].includes("|"))
         ? row[0].split("|").map(cleanCell)
         : row.map(cleanCell);
 
-      // Shift columns if Column 0 is a numeric serial number
-      if(parts.length >= 2 && /^\d+$/.test(parts[0]) && isNaN(parts)){
-        parts = parts.slice(1);
+      let name = cleanCell(cells[nameCol] ?? cells[0]);
+      let gothram = cleanCell(cells[gothramCol] ?? cells);
+      let gender = cleanCell(cells[genderCol] ?? cells[2]);
+
+      // If Column 0 was purely numeric and got selected as name, shift right
+      if(/^\d+$/.test(name) && cells.length > 1){
+        name = cleanCell(cells);
+        gothram = cleanCell(cells[2]);
+        gender = cleanCell(cells[3]);
       }
 
-      const rawName = parts[nameCol] || parts[0] || "";
-      const rawGothram = parts[gothramCol] || parts || "";
-      const rawGender = parts[genderCol] || parts[2] || "";
+      if(!name || name.startsWith("#")) return;
 
-      if(!rawName || rawName.startsWith("#")) return;
+      const prefix = getGenderPrefix(name, gender);
 
-      const prefix = getGenderPrefix(rawName, rawGender);
       devotees.push({
-        fullName: prefix + rawName,
-        gothram: rawGothram
+        displayName: prefix + name,
+        gothram: gothram
       });
     });
 
@@ -384,15 +398,15 @@ async function loadDevotees(){
       return;
     }
 
-    listBox.innerHTML = devotees.map((d, index) => `
+    listBox.innerHTML = devotees.map((devotee, index) => `
       <div class="devotee">
         <span class="number">${index + 1}</span>
-        <div class="devotee-name">${escapeHTML(d.fullName)}</div>
-        ${d.gothram ? `
+        <div class="devotee-name">${escapeHTML(devotee.displayName)}</div>
+        ${devotee.gothram ? `
           <div class="devotee-gothram">
-            <span class="gothram-label">గోత్రం:</span>${escapeHTML(d.gothram)}
+            గోత్రం: ${escapeHTML(devotee.gothram)}
           </div>
-        ` : ''}
+        ` : '<div></div>'}
       </div>
     `).join("");
 
@@ -400,7 +414,7 @@ async function loadDevotees(){
     console.error(error);
     listBox.innerHTML = `
       <div class="status error">
-        Google Sheet నుండి వివరాలు లోడ్ కాలేదు.<br>
+        Google Sheet నుండి పేర్లు లోడ్ కాలేదు.<br>
         Sheet ను Publish to Web చేసి ఉంచండి.
       </div>`;
   }
@@ -409,8 +423,5 @@ async function loadDevotees(){
 renderSpecialNames();
 loadDevotees();
 
-/* Automatically refresh the list from Google Sheet every 60 seconds */
+/* Refresh from Google Sheet every 60 seconds */
 setInterval(loadDevotees, 60000);
-</script>
-</body>
-</html>

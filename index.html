@@ -32,7 +32,6 @@
     to{background-position:100% 80%}
   }
 
-  /* Fixed header */
   .site-header{
     position:sticky;
     top:0;
@@ -114,7 +113,7 @@
   }
   .devotee-list{
     display:grid;
-    gap:11px;
+    gap:12px;
   }
   .devotee{
     display:grid;
@@ -245,7 +244,6 @@ function renderSpecialNames(){
   ).join("");
 }
 
-/* CSV Parser */
 function parseCSV(text){
   const rows = [];
   let row = [], cell = "", quoted = false;
@@ -280,59 +278,13 @@ function cleanCell(value){
   return String(value ?? "").trim().replace(/^"|"$/g, "").trim();
 }
 
-/* Detect Column Positions in the Sheet */
-function detectColumns(headers){
-  const norm = headers.map(h => cleanCell(h).toLowerCase());
-
-  let nameCol = -1;
-  const nameKeys = ["name", "names", "devotee", "devotee name", "పేరు", "పేర్లు", "భక్తుని పేరు", "భక్తుల పేర్లు", "దాత పేరు"];
-  for(const k of nameKeys){
-    const idx = norm.findIndex(h => h === k || h.includes(k));
-    if(idx >= 0){ nameCol = idx; break; }
-  }
-
-  let gothramCol = -1;
-  const gothramKeys = ["gothram", "gotram", "gothra", "gotra", "గోత్రం", "గోత్రము"];
-  for(const k of gothramKeys){
-    const idx = norm.findIndex(h => h === k || h.includes(k));
-    if(idx >= 0){ gothramCol = idx; break; }
-  }
-
-  let genderCol = -1;
-  const genderKeys = ["gender", "sex", "లింగం", "జాతి"];
-  for(const k of genderKeys){
-    const idx = norm.findIndex(h => h === k || h.includes(k));
-    if(idx >= 0){ genderCol = idx; break; }
-  }
-
-  // If first column is S.No (e.g. S.No, Name, Gothram, Gender), shift default index by 1
-  const isFirstColSno = ["s.no", "sl.no", "sno", "serial", "no", "క్రమ సంఖ్య"].some(k => norm[0] && norm[0].includes(k));
-  const defaultOffset = isFirstColSno ? 1 : 0;
-
-  if(nameCol === -1) nameCol = defaultOffset;
-  if(gothramCol === -1) gothramCol = defaultOffset + 1;
-  if(genderCol === -1) genderCol = defaultOffset + 2;
-
-  return { nameCol, gothramCol, genderCol };
-}
-
-function isHeaderRow(row){
-  const text = row.map(c => cleanCell(c).toLowerCase()).join(" ");
-  return (
-    ["name", "devotee", "పేరు", "భక్తు"].some(k => text.includes(k)) ||
-    ["gothram", "gotram", "గోత్రం"].some(k => text.includes(k)) ||
-    ["gender", "sex", "లింగం"].some(k => text.includes(k)) ||
-    ["s.no", "sl.no", "క్రమ సంఖ్య"].some(k => text.includes(k))
-  );
-}
-
-/* Gender Honorific: శ్రీ or శ్రీమతి */
-function getGenderPrefix(name, gender){
+/* Gender Prefix based on Column C */
+function getPrefix(name, gender){
   const cleanN = cleanCell(name);
   if(!cleanN) return "";
 
-  // Avoid duplicating if the sheet already contains an honorific
-  if(/^(శ్రీమతి|శ్రీ|srimathi|srimati|sri|smt\.?|mr\.?|mrs\.?)\s+/i.test(cleanN)){
+  // Skip prefix if name already starts with Sri or Srimathi
+  if(/^(శ్రీమతి|శ్రీ|srimathi|srimati|sri|smt\.?|mr\.?|mrs\.?)\b/i.test(cleanN)){
     return "";
   }
 
@@ -361,37 +313,44 @@ async function loadDevotees(){
       return;
     }
 
-    const hasHeader = isHeaderRow(rows[0]);
-    const { nameCol, gothramCol, genderCol } = detectColumns(rows[0]);
-    const dataRows = hasHeader ? rows.slice(1) : rows;
+    /*
+      Exact column mapping from your sheet:
+      Column A (index 0) = Serial Number / Details
+      Column B (index 1) = Devotee Name
+      Column C (index 2) = Gender
+      Column D (index 3) = Gothram
+    */
+    const NAME_COL = 1;
+    const GENDER_COL = 2;
+    const GOTHRAM_COL = 3;
 
-    const devotees = [];
+    const devotees = rows.slice(1)
+      .map(row => {
+        const name = cleanCell(row[NAME_COL]);
+        const gender = cleanCell(row[GENDER_COL]);
+        const gothram = cleanCell(row[GOTHRAM_COL]);
 
-    dataRows.forEach(row => {
-      const cells = (row.length === 1 && row[0].includes("|"))
-        ? row[0].split("|").map(cleanCell)
-        : row.map(cleanCell);
+        // Skip blank rows or header rows
+        if(!name || name.toLowerCase() === "devotee name" || name.startsWith("#")) return null;
 
-      let name = cleanCell(cells[nameCol] ?? cells[0]);
-      let gothram = cleanCell(cells[gothramCol] ?? cells);
-      let gender = cleanCell(cells[genderCol] ?? cells[2]);
+        const prefix = getPrefix(name, gender);
 
-      // If Column 0 was purely numeric and got selected as name, shift right
-      if(/^\d+$/.test(name) && cells.length > 1){
-        name = cleanCell(cells);
-        gothram = cleanCell(cells[2]);
-        gender = cleanCell(cells[3]);
-      }
+        // Format Gothram label neatly
+        let gothramDisplay = "";
+        if(gothram){
+          if(gothram.toLowerCase().includes("gothram") || gothram.includes("గోత్రం")){
+            gothramDisplay = gothram;
+          } else {
+            gothramDisplay = "గోత్రం: " + gothram;
+          }
+        }
 
-      if(!name || name.startsWith("#")) return;
-
-      const prefix = getGenderPrefix(name, gender);
-
-      devotees.push({
-        displayName: prefix + name,
-        gothram: gothram
-      });
-    });
+        return {
+          displayName: prefix + name,
+          gothram: gothramDisplay
+        };
+      })
+      .filter(Boolean);
 
     if(!devotees.length){
       listBox.innerHTML = '<div class="status">భక్తుల వివరాలు కనిపించలేదు.</div>';
@@ -404,7 +363,7 @@ async function loadDevotees(){
         <div class="devotee-name">${escapeHTML(devotee.displayName)}</div>
         ${devotee.gothram ? `
           <div class="devotee-gothram">
-            గోత్రం: ${escapeHTML(devotee.gothram)}
+            ${escapeHTML(devotee.gothram)}
           </div>
         ` : '<div></div>'}
       </div>
@@ -425,3 +384,6 @@ loadDevotees();
 
 /* Refresh from Google Sheet every 60 seconds */
 setInterval(loadDevotees, 60000);
+</script>
+</body>
+</html>
